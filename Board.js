@@ -2,8 +2,18 @@
 
 class Board {
   constructor() {
-    const row = Array(3).fill(null);
-    this._board = [row.slice(), row.slice(), row.slice()];
+    this._coordinatesToIndex = {
+      '00': 0,
+      '01': 1,
+      '02': 2,
+      '10': 3,
+      '11': 4,
+      '12': 5,
+      '20': 6,
+      '21': 7,
+      '22': 8,
+    };
+    this._board = Array(9).fill(null);
     this._xIsNext = true;
   }
 
@@ -15,31 +25,35 @@ class Board {
     // clear the game board
   }
 
+  getCoordinatesToIndex(row, col) {
+    return this._coordinatesToIndex[`${row}${col}`];
+  }
+
   addMove(row, col) {
     if (this.allowsMove(row, col)) {
-      const copy = this._board.map(pieces => pieces.slice());
-      const piece = this._xIsNext ? 'X' : 'O';
-      copy[row][col] = piece;
-      this._board = copy;
-      this._xIsNext = !this._xIsNext;
+      const index = this.getCoordinatesToIndex(row, col);
+      if (index !== undefined) {
+        const copy = this._board.slice();
+        const piece = this._xIsNext ? 'X' : 'O';
+        copy[index] = piece;
+        this._board = copy;
+        this._xIsNext = !this._xIsNext;
+      }
     }
   }
 
   allowsMove(row, col) {
-    return this._board[row][col] === null;
+    const index = this.getCoordinatesToIndex(row, col);
+    return this._board[index] === null;
   }
 
   isFull() {
-    // check if game board is full
+    return !this._board.includes(null);
   }
 
-  calculateWinner() {
-    // determine if person who just placed a piece has won the game
-  }
+  calculateWinner() {}
 
-  hostGame() {
-    // host a game of tic tac toe
-  }
+  // hostGame() {}
 }
 
 module.exports = Board;
