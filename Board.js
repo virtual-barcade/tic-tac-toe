@@ -1,4 +1,13 @@
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable no-console */
+/* eslint-disable no-await-in-loop */
+
+const { WELCOME_MESSAGE, DELIMITER, GAME_OVER } = require('./constants');
+const {
+  getCoordinatesAndPlacePiece,
+  printNextPlayer,
+  printWinner,
+} = require('./helpers');
 
 class Board {
   constructor() {
@@ -24,12 +33,12 @@ class Board {
       }
       return piece;
     });
-    let piecesToString = '\n    0   1   2\n';
+    let piecesToString = '      0   1   2\n';
     let rowEntryCounter = 0;
     let rowCounter = 0;
     pieces.forEach(piece => {
       if (rowEntryCounter === 0) {
-        piecesToString += `${rowCounter} | ${piece} |`;
+        piecesToString += `  ${rowCounter} | ${piece} |`;
       } else {
         piecesToString += ` ${piece} |`;
       }
@@ -53,7 +62,6 @@ class Board {
   }
 
   addMove(row, col) {
-    // if (this.allowsMove(row, col)) {
     const index = this.getCoordinatesToIndex(row, col);
     if (index !== undefined) {
       const copy = this._board.slice();
@@ -62,7 +70,6 @@ class Board {
       this._board = copy;
       this._xIsNext = !this._xIsNext;
     }
-    // }
   }
 
   allowsMove(row, col) {
@@ -98,7 +105,30 @@ class Board {
     return null;
   }
 
-  // hostGame() {}
+  async hostGame() {
+    console.log(WELCOME_MESSAGE);
+    console.log(DELIMITER);
+    console.log(printNextPlayer(this._xIsNext));
+    console.log(this.print());
+    while (!this.isFull()) {
+      try {
+        await getCoordinatesAndPlacePiece(this);
+      } catch (error) {
+        console.log(error);
+      }
+      const winner = this.calculateWinner();
+      if (winner) {
+        console.log(printWinner(winner));
+        console.log(this.print());
+        break;
+      }
+      console.log(printNextPlayer(this._xIsNext));
+      console.log(this.print());
+    }
+    if (this.isFull()) {
+      console.log(GAME_OVER);
+    }
+  }
 }
 
 module.exports = Board;

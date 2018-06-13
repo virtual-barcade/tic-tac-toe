@@ -44,7 +44,7 @@ describe(`Board's print method`, () => {
 
   test(`should return a string representing an empty game board when no pieces have been placed.`, () => {
     const emptyBoard =
-      '\n    0   1   2\n0 | - | - | - |\n1 | - | - | - |\n2 | - | - | - |\n';
+      '      0   1   2\n  0 | - | - | - |\n  1 | - | - | - |\n  2 | - | - | - |\n';
     const currentBoard = board.print();
     expect(currentBoard).toBe(emptyBoard);
   });
@@ -56,7 +56,7 @@ describe(`Board's print method`, () => {
     board.addMove(0, 1);
     board.addMove(1, 2);
     const expectedBoard =
-      '\n    0   1   2\n0 | O | O | - |\n1 | X | X | X |\n2 | - | - | - |\n';
+      '      0   1   2\n  0 | O | O | - |\n  1 | X | X | X |\n  2 | - | - | - |\n';
     const currentBoard = board.print();
     expect(currentBoard).toBe(expectedBoard);
   });
