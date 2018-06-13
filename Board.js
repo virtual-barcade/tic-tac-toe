@@ -81,6 +81,7 @@ class Board {
     return !this._board.includes(null);
   }
 
+  /* ref: https://reactjs.org/tutorial/tutorial.html#declaring-a-winner */
   calculateWinner() {
     const lines = [
       [0, 1, 2],
