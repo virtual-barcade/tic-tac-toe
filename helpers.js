@@ -1,6 +1,6 @@
 const { get } = require('prompt');
 
-const getCoordinatesAndPlacePiece = async board =>
+const getCoordinatesAndPlacePiece = board =>
   new Promise((resolve, reject) => {
     get(['coordinates'], (error, result) => {
       if (error) {
